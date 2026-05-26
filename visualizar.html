@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel - Equipes Cadastradas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #faf9f6; }
+    </style>
+</head>
+<body class="min-h-screen p-6 sm:p-12">
+
+    <div class="max-w-5xl mx-auto">
+        
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
+            <div>
+                <h1 class="text-2xl font-semibold text-stone-800 tracking-tight">Painel de Controle</h1>
+                <p class="text-sm text-stone-500 mt-1">Gerenciamento das equipes do Arraiá</p>
+            </div>
+            <a href="index.html" class="px-4 py-2 bg-stone-800 hover:bg-stone-900 text-white text-sm font-medium rounded-lg transition-colors">
+                + Nova Equipe
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
+            <div class="bg-white p-6 rounded-xl border border-stone-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
+                <p class="text-xs font-medium text-stone-400 uppercase tracking-wider">Total de Equipes</p>
+                <p id="totalEquipes" class="text-3xl font-semibold text-stone-800 mt-1">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border border-stone-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
+                <p class="text-xs font-medium text-stone-400 uppercase tracking-wider">Total de Participantes</p>
+                <p id="totalPessoas" class="text-3xl font-semibold text-orange-600 mt-1">0</p>
+            </div>
+        </div>
+
+        <div id="listaEquipes" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div id="loading" class="col-span-full text-center py-12 text-stone-400 text-sm">
+                Carregando equipes...
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const listaContainer = document.getElementById('listaEquipes');
+        const totalEquipesEl = document.getElementById('totalEquipes');
+        const totalPessoasEl = document.getElementById('totalPessoas');
+
+        // Escuta em tempo real as mudanças no banco
+        const q = query(collection(db, "equipes_junina"), orderBy("dataCadastro", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
+            listaContainer.innerHTML = "";
+            let totalPessoas = 0;
+            let totalEquipes = snapshot.size;
+
+            if (totalEquipes === 0) {
+                listaContainer.innerHTML = `<div class="col-span-full text-center py-12 text-stone-400 text-sm">Nenhuma equipe cadastrada ainda.</div>`;
+                totalEquipesEl.textContent = "0";
+                totalPessoasEl.textContent = "0";
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const equipe = doc.data();
+                totalPessoas += equipe.qtdPessoas || 0;
+
+                // Template do Card Minimalista
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-xl border border-stone-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-3">
+                            <h3 class="text-lg font-medium text-stone-800">${equipe.nomeEquipe}</h3>
+                            <span class="px-2.5 py-1 bg-orange-50 text-orange-700 text-xs font-medium rounded-full">${equipe.atividade}</span>
+                        </div>
+                        
+                        <div class="space-y-1.5 text-sm text-stone-600 mb-4">
+                            <p><strong class="font-medium text-stone-700">Líder:</strong> ${equipe.lider}</p>
+                            <p><strong class="font-medium text-stone-700">Turma:</strong> ${equipe.turma}</p>
+                            <p><strong class="font-medium text-stone-700">Membros (${equipe.qtdPessoas}):</strong></p>
+                            <p class="text-xs text-stone-400 bg-stone-50 p-2 rounded border border-stone-100 max-h-20 overflow-y-auto">${equipe.integrantes ? equipe.integrantes.join(', ') : ''}</p>
+                        </div>
+                    </div>
+                `;
+                listaContainer.appendChild(card);
+            });
+
+            // Atualiza os contadores na tela
+            totalEquipesEl.textContent = totalEquipes;
+            totalPessoasEl.textContent = totalPessoas;
+        }, (error) => {
+            console.error("Erro ao buscar dados: ", error);
+            listaContainer.innerHTML = `<div class="col-span-full text-center py-12 text-red-500 text-sm">Erro ao carregar dados. Verifique o console ou as regras do Firestore.</div>`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Festa Junina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #faf9f6; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <main class="w-full max-w-lg bg-white p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-stone-100 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 via-red-500 to-yellow-400"></div>
+
+        <header class="mb-8 text-center">
+            <h1 class="text-2xl font-semibold text-stone-800 tracking-tight">Equipes Juninas</h1>
+            <p class="text-sm text-stone-500 mt-1">Cadastre sua equipe para a festa</p>
+        </header>
+
+        <form id="cadastroForm" class="space-y-5">
+            <div>
+                <label for="nomeEquipe" class="block text-sm font-medium text-stone-700 mb-1">Nome da Equipe</label>
+                <input type="text" id="nomeEquipe" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400" placeholder="Ex: Arraiá da Alegria">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="lider" class="block text-sm font-medium text-stone-700 mb-1">Líder / Responsável</label>
+                    <input type="text" id="lider" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400" placeholder="Nome do líder">
+                </div>
+                <div>
+                    <label for="turma" class="block text-sm font-medium text-stone-700 mb-1">Turma / Série</label>
+                    <select id="turma" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all text-stone-700">
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="1º Ano">1º Ano</option>
+                        <option value="2º Ano">2º Ano</option>
+                        <option value="3º Ano">3º Ano</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="atividade" class="block text-sm font-medium text-stone-700 mb-1">Tipo de Atividade</label>
+                    <select id="atividade" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all text-stone-700">
+                        <option value="" disabled selected>O que vão fazer?</option>
+                        <option value="Dança / Quadrilha">Dança / Quadrilha</option>
+                        <option value="Barraca de Comida">Barraca de Comida</option>
+                        <option value="Barraca de Jogos">Barraca de Jogos</option>
+                        <option value="Apoio">Apoio</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="qtdAlunos" class="block text-sm font-medium text-stone-700 mb-1">Qtd. de Alunos</label>
+                    <input type="number" id="qtdAlunos" min="1" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400" placeholder="Ex: 15">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="horario" class="block text-sm font-medium text-stone-700 mb-1">Horário (Início)</label>
+                    <input type="time" id="horario" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all text-stone-700">
+                </div>
+                <div>
+                    <label for="musica" class="block text-sm font-medium text-stone-700 mb-1">Música (Opcional)</label>
+                    <input type="text" id="musica" class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400" placeholder="Ex: Pula Fogueira">
+                </div>
+            </div>
+
+            <div>
+                <label for="descricao" class="block text-sm font-medium text-stone-700 mb-1">Descrição do que vão fazer</label>
+                <textarea id="descricao" rows="2" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400 resize-none" placeholder="Detalhes da apresentação, pratos da barraca, etc..."></textarea>
+            </div>
+
+            <div>
+                <label for="integrantes" class="block text-sm font-medium text-stone-700 mb-1">Nomes dos Integrantes</label>
+                <textarea id="integrantes" rows="3" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all placeholder-stone-400 resize-none" placeholder="Separe por vírgulas..."></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="w-full mt-4 bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 rounded-lg transition-colors flex justify-center items-center gap-2">
+                <span id="btnText">Confirmar Cadastro</span>
+            </button>
+        </form>
+    </main>
+
+    <a href="visualizar.html" class="mt-6 text-sm text-stone-500 hover:text-orange-600 transition-colors underline">Ver equipes cadastradas →</a>
+
+    <div id="messageModal" class="fixed inset-0 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-sm text-center shadow-xl transform scale-95 transition-transform duration-300" id="modalContent">
+            <div id="modalIcon" class="mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4"></div>
+            <h3 id="modalTitle" class="text-lg font-semibold text-stone-800 mb-2"></h3>
+            <p id="modalText" class="text-sm text-stone-600 mb-6"></p>
+            <button onclick="closeModal()" class="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium rounded-lg transition-colors">Fechar</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const form = document.getElementById('cadastroForm');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const equipeData = {
+                nomeEquipe: document.getElementById('nomeEquipe').value.trim(),
+                lider: document.getElementById('lider').value.trim(),
+                turma: document.getElementById('turma').value,
+                atividade: document.getElementById('atividade').value,
+                qtdAlunos: parseInt(document.getElementById('qtdAlunos').value, 10),
+                horario: document.getElementById('horario').value,
+                musica: document.getElementById('musica').value.trim(),
+                descricao: document.getElementById('descricao').value.trim(),
+                integrantes: document.getElementById('integrantes').value.split(',').map(i => i.trim()).filter(i => i),
+                dataCadastro: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "equipes_junina"), equipeData);
+                showModal('success', 'Sucesso!', 'Equipe cadastrada com sucesso!');
+                form.reset();
+            } catch (error) {
+                console.error(error);
+                showModal('error', 'Erro ao salvar', 'Verifique suas regras de segurança no banco de dados.');
+            }
+        });
+
+        window.showModal = function(type, title, text) {
+            const modal = document.getElementById('messageModal');
+            const content = document.getElementById('modalContent');
+            const iconDiv = document.getElementById('modalIcon');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalText').textContent = text;
+
+            if (type === 'success') {
+                iconDiv.className = "mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-green-100 text-green-600";
+                iconDiv.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+            } else {
+                iconDiv.className = "mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-red-100 text-red-600";
+                iconDiv.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+            }
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        window.closeModal = function() {
+            document.getElementById('messageModal').classList.add('opacity-0', 'pointer-events-none');
+        };
+    </script>
+</body>
+</html>
